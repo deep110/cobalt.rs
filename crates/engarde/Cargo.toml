@@ -34,7 +34,7 @@ syntax = ["syntect"]
 version = "5.2.0"
 optional = true
 default-features = false
-features =  ["parsing", "regex-fancy", "default-syntaxes", "default-themes", "html", "dump-load", "yaml-load"]
+features =  ["parsing", "regex-fancy", "default-syntaxes", "default-themes", "html", "dump-load", "yaml-load", "plist-load"]
 
 [target.'cfg(any())'.dependencies]
 thiserror = "1.0.69"  # HACK: bad minimal dep in syntect

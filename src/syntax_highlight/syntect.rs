@@ -27,11 +27,24 @@ struct Setup {
 unsafe impl Send for Setup {}
 unsafe impl Sync for Setup {}
 
+static CUSTOM_THEME: &'static [u8] = include_bytes!("../../themes/OneLight.tmTheme");
+
 lazy_static! {
     static ref SETUP: Setup = Setup {
         syntax_set: SyntaxSet::load_defaults_newlines(),
-        theme_set: ThemeSet::load_defaults()
+        theme_set: load_themes()
     };
+}
+
+pub fn load_themes() -> ThemeSet {
+    let mut themes = ThemeSet::load_defaults();
+
+    let mut buf_reader = std::io::Cursor::new(CUSTOM_THEME);
+    let custom_theme = ThemeSet::load_from_reader(&mut buf_reader).unwrap_or_default();
+
+    themes.themes.insert("OneLight".to_string(), custom_theme);
+
+    return themes;
 }
 
 pub fn has_syntax_theme(name: &str) -> error::Result<bool> {

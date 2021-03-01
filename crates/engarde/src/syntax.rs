@@ -8,6 +8,8 @@ use syntect::parsing::{SyntaxReference, SyntaxSet};
 use syntect::util::LinesWithEndings;
 
 /// Highlight code block
+static CUSTOM_THEME: &'static [u8] = include_bytes!("../themes/OneLight.tmTheme");
+
 #[derive(Debug)]
 #[non_exhaustive]
 pub struct Syntax {
@@ -20,7 +22,7 @@ impl Syntax {
     pub fn new() -> Self {
         Self {
             syntax_set: SyntaxSet::load_defaults_newlines(),
-            theme_set: ThemeSet::load_defaults(),
+            theme_set: Syntax::load_themes(),
             default_theme: None,
         }
     }
@@ -30,6 +32,17 @@ impl Syntax {
         builder.add_from_folder(syntaxes_path, true).unwrap();
         self.syntax_set = builder.build();
     }
+
+    pub fn load_themes() -> ThemeSet {
+        let mut themes = ThemeSet::load_defaults();
+    
+        let mut buf_reader = std::io::Cursor::new(CUSTOM_THEME);
+        let custom_theme = ThemeSet::load_from_reader(&mut buf_reader).unwrap_or_default();
+    
+        themes.themes.insert("OneLight".to_string(), custom_theme);
+    
+        return themes;
+    }    
 
     pub fn has_theme(&self, name: &str) -> bool {
         self.theme_set.themes.contains_key(name)

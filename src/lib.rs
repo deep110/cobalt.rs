@@ -22,5 +22,6 @@ mod document;
 
 mod pagination;
 mod syntax_highlight;
+mod equation_block;
 
 pub use crate::syntax_highlight::{list_syntax_themes, list_syntaxes};

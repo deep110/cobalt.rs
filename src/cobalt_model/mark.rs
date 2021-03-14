@@ -33,7 +33,13 @@ impl Markdown {
         let options = cmark::Options::ENABLE_FOOTNOTES
             | cmark::Options::ENABLE_TABLES
             | cmark::Options::ENABLE_STRIKETHROUGH
-            | cmark::Options::ENABLE_TASKLISTS;
+            | cmark::Options::ENABLE_TASKLISTS
+            | cmark::Options::ENABLE_HEADING_ATTRIBUTES
+            | cmark::Options::ENABLE_GFM
+            | cmark::Options::ENABLE_SUPERSCRIPT
+            | cmark::Options::ENABLE_SUBSCRIPT
+            | cmark::Options::ENABLE_DEFINITION_LIST
+            | cmark::Options::ENABLE_MATH;
         let parser = cmark::Parser::new_ext(content, options);
         cmark::html::push_html(
             &mut buf,

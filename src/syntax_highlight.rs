@@ -2,6 +2,7 @@ use std::io::Write;
 
 use crate::error;
 use itertools::Itertools;
+use katex;
 use liquid_core::Language;
 use liquid_core::TagBlock;
 use liquid_core::TagTokenIter;
@@ -146,6 +147,7 @@ pub(crate) struct DecoratedParser<'a> {
     theme: Option<&'a str>,
     lang: Option<String>,
     code: Option<Vec<pulldown_cmark::CowStr<'a>>>,
+    katex_opts: katex::Opts,
 }
 
 impl<'a> DecoratedParser<'a> {
@@ -161,6 +163,12 @@ impl<'a> DecoratedParser<'a> {
             theme,
             lang: None,
             code: None,
+            katex_opts: katex::Opts::builder()
+                .display_mode(true)
+                .output_type(katex::OutputType::Html)
+                .throw_on_error(false)
+                .build()
+                .unwrap(),
         })
     }
 }
@@ -190,7 +198,12 @@ impl<'a> Iterator for DecoratedParser<'a> {
             Some(End(cmark::TagEnd::CodeBlock)) => {
                 let html = if let Some(code) = self.code.as_deref() {
                     let code = code.iter().join("\n");
-                    self.syntax.format(&code, self.lang.as_deref(), self.theme)
+                    if self.lang.as_deref() == Some("equation") {
+                        self.katex_opts.set_display_mode(true);
+                        katex::render_with_opts(&code, &self.katex_opts).unwrap()
+                    } else {
+                        self.syntax.format(&code, self.lang.as_deref(), self.theme)
+                    }
                 } else {
                     self.syntax.format("", self.lang.as_deref(), self.theme)
                 };
@@ -198,6 +211,12 @@ impl<'a> Iterator for DecoratedParser<'a> {
                 self.lang = None;
                 self.code = None;
                 // close the code block
+                Some(Html(pulldown_cmark::CowStr::Boxed(html.into_boxed_str())))
+            }
+            Some(Event::InlineMath(text)) => {
+                self.katex_opts.set_display_mode(false);
+                let html = katex::render_with_opts(&text, &self.katex_opts).unwrap();
+
                 Some(Html(pulldown_cmark::CowStr::Boxed(html.into_boxed_str())))
             }
             item => item,

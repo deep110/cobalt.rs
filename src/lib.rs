@@ -13,5 +13,6 @@ mod document;
 
 mod pagination;
 mod syntax_highlight;
+mod custom_blocks;
 
 pub use crate::syntax_highlight::SyntaxHighlight;

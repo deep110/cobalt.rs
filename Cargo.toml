@@ -99,6 +99,7 @@ sitemap = "0.4"
 open = "3"
 dunce = "1.0.3"
 vimwiki = { version = "0.1", features = ["html"] }
+katex = "0.4.1"
 
 file-serve = { version = "0.2.1", path = "crates/file-serve", optional = true }
 notify = { version = "5", optional = true, default-features = false, features = ["macos_fsevent"] }

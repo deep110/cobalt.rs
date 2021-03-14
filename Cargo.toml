@@ -83,6 +83,7 @@ sitemap = "0.4"
 open = "2.1"
 dunce = "1.0.2"
 vimwiki = { version = "0.1", features = ["html"] }
+katex = "0.4.1"
 
 file-serve = { version = "0.2.0", path = "crates/file-serve", optional = true }
 notify = { version = "4", optional = true }

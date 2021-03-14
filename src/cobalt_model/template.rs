@@ -4,6 +4,7 @@ use std::path;
 use super::files;
 use crate::error::*;
 use crate::syntax_highlight;
+use crate::custom_blocks;
 use liquid;
 
 type Partials = liquid::partials::EagerCompiler<liquid::partials::InMemorySource>;
@@ -51,6 +52,7 @@ impl LiquidBuilder {
             .filter(liquid_lib::jekyll::ArrayToSentenceString)
             .partials(load_partials_from_path(self.includes_path)?)
             .block(highlight)
+            .block(custom_blocks::EquationBlock::new())
             .build()?;
         Ok(Liquid { parser })
     }

@@ -70,6 +70,15 @@ fn parse_categories_list<'a, 'b>(
 ) -> Result<()> {
     if cur_idx <= cur_post_categories.len() {
         let cat_full_path = construct_cat_full_path(cur_idx, cur_post_categories);
+
+        // need to sort for binary_search_by
+        parent.sub_cats.sort_by(|c1, c2| {
+            compare_category_path(
+                c1.cat_path.iter().map(|v| v.as_view()),
+                c2.cat_path.iter().map(|v| v.as_view()),
+            )
+        });
+
         let mut cur_cat = if let Ok(idx) = parent.sub_cats.binary_search_by(|c| {
             compare_category_path(
                 c.cat_path.iter().map(|v| v.as_view()),
@@ -82,13 +91,6 @@ fn parse_categories_list<'a, 'b>(
             parent
                 .sub_cats
                 .push(Category::with_path(cat_full_path.into_iter()));
-            // need to sort for binary_search_by
-            parent.sub_cats.sort_by(|c1, c2| {
-                compare_category_path(
-                    c1.cat_path.iter().map(|v| v.as_view()),
-                    c2.cat_path.iter().map(|v| v.as_view()),
-                )
-            });
             &mut parent.sub_cats[last_idx]
         };
 

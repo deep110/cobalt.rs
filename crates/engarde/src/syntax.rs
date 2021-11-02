@@ -30,7 +30,7 @@ impl Syntax {
         themes.themes.insert("OneLight".to_string(), custom_theme);
     
         return themes;
-    }    
+    }
 
     pub fn has_theme(&self, name: &str) -> bool {
         self.theme_set.themes.contains_key(name)

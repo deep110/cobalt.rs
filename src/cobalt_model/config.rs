@@ -97,6 +97,7 @@ impl Config {
         let layouts_path = source.join(layouts_dir);
 
         let liquid = template::LiquidBuilder {
+            destination: destination.clone().into_os_string().into_string().expect(""),
             includes_path,
             theme: syntax_highlight
                 .enabled

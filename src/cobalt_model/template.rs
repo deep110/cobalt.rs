@@ -36,6 +36,7 @@ fn load_partials_from_path(root: path::PathBuf) -> Result<Partials> {
 #[derive(Debug, Clone, PartialEq, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct LiquidBuilder {
+    pub destination: String,
     pub includes_path: path::PathBuf,
     pub theme: Option<liquid::model::KString>,
 }
@@ -56,6 +57,7 @@ impl LiquidBuilder {
             .partials(load_partials_from_path(self.includes_path)?)
             .block(highlight)
             .block(custom_blocks::EquationBlock::new())
+            .block(custom_blocks::AsciiArtBlock::new(self.destination))
             .build()?;
         Ok(Liquid { parser })
     }

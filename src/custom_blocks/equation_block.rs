@@ -102,7 +102,8 @@ mod test {
 
     #[test]
     fn test_equation() {
-        let output = unit_parse("{% equation %} This is a test {% endequation %}");
-        assert_eq!(output, " This is a test ");
+        let output = unit_parse("{% equation %}\\omega{% endequation %}");
+
+        assert_eq!(output, "<span class=\"katex-display\"><span class=\"katex\"><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.43056em;vertical-align:0em;\"></span><span class=\"mord mathnormal\" style=\"margin-right:0.03588em;\">ω</span></span></span></span></span>");
     }
 }

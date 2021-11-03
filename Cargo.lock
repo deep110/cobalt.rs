@@ -1149,9 +1149,9 @@ dependencies = [
 
 [[package]]
 name = "katex"
-version = "0.4.1"
+version = "0.4.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "68ae3d8273e13173e96a80828843d8d5e4e21ca7ca12f23419e09360744ec386"
+checksum = "96d5879d24b10f5d16704c47ec3d39745255b1c01336766cf08926f51d80cc7c"
 dependencies = [
  "cfg-if 1.0.0",
  "derive_builder 0.10.2",

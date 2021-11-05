@@ -59,11 +59,20 @@ impl ParseBlock for EquationBlock {
         mut tokens: TagBlock<'_, '_>,
         _options: &Language,
     ) -> Result<Box<dyn Renderable>> {
+        let target = arguments.expect_next("Value expected.");
+
         // no arguments should be supplied, trying to supply them is an error
         arguments.expect_nothing()?;
 
+        let inline = match target {
+            Ok(val) => val.expect_value().into_result()?.to_string() == "inline",
+            Err(_) => false,
+        };
+        let mut opts = self.katex_opts.clone();
+        opts.set_display_mode(!inline);
+
         let raw_content = tokens.escape_liquid(false)?.to_string();
-        let content = katex::render_with_opts(&raw_content, &self.katex_opts).unwrap();
+        let content = katex::render_with_opts(&raw_content, &opts).unwrap();
 
         tokens.assert_empty();
         Ok(Box::new(Equation { content }))
@@ -105,5 +114,12 @@ mod test {
         let output = unit_parse("{% equation %}\\omega{% endequation %}");
 
         assert_eq!(output, "<span class=\"katex-display\"><span class=\"katex\"><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.43056em;vertical-align:0em;\"></span><span class=\"mord mathnormal\" style=\"margin-right:0.03588em;\">ω</span></span></span></span></span>");
+    }
+
+    #[test]
+    fn test_equation_line() {
+        let output = unit_parse("{% equation inline %}\\omega{% endequation %}");
+
+        assert_eq!(output, "<span class=\"katex\"><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.43056em;vertical-align:0em;\"></span><span class=\"mord mathnormal\" style=\"margin-right:0.03588em;\">ω</span></span></span></span>");
     }
 }

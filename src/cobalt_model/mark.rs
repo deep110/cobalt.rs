@@ -27,7 +27,8 @@ impl Markdown {
         let options = cmark::Options::ENABLE_FOOTNOTES
             | cmark::Options::ENABLE_TABLES
             | cmark::Options::ENABLE_STRIKETHROUGH
-            | cmark::Options::ENABLE_TASKLISTS;
+            | cmark::Options::ENABLE_TASKLISTS
+            | cmark::Options::ENABLE_HEADING_ATTRIBUTES;
         let parser = cmark::Parser::new_ext(content, options);
         cmark::html::push_html(&mut buf, decorate_markdown(parser, self.theme.as_deref()));
         Ok(buf)

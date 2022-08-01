@@ -84,7 +84,7 @@ open = "2.1"
 dunce = "1.0.2"
 vimwiki = { version = "0.1", features = ["html"] }
 katex = "0.4.1"
-svgbob = "0.6.2"
+svgbob = "0.6.7"
 
 file-serve = { version = "0.2.0", path = "crates/file-serve", optional = true }
 notify = { version = "4", optional = true }

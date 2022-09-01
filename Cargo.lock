@@ -353,7 +353,7 @@ dependencies = [
  "snapbox",
  "svgbob",
  "tempfile",
- "time 0.3.9",
+ "time 0.3.14",
  "toml",
  "trycmd",
  "vimwiki",
@@ -375,7 +375,7 @@ dependencies = [
  "serde",
  "serde_yaml",
  "status",
- "time 0.3.9",
+ "time 0.3.14",
 ]
 
 [[package]]
@@ -1359,7 +1359,7 @@ dependencies = [
  "pest_derive",
  "regex",
  "serde",
- "time 0.3.9",
+ "time 0.3.14",
 ]
 
 [[package]]
@@ -1385,7 +1385,7 @@ dependencies = [
  "once_cell",
  "percent-encoding",
  "regex",
- "time 0.3.9",
+ "time 0.3.14",
  "unicode-segmentation",
 ]
 
@@ -1891,7 +1891,7 @@ dependencies = [
  "indexmap",
  "line-wrap",
  "serde",
- "time 0.3.9",
+ "time 0.3.14",
  "xml-rs",
 ]
 
@@ -2601,9 +2601,9 @@ dependencies = [
 
 [[package]]
 name = "time"
-version = "0.3.9"
+version = "0.3.14"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c2702e08a7a860f005826c6815dcac101b19b5eb330c27fe4a5928fec1d20ddd"
+checksum = "3c3f9a28b618c3a6b9251b6908e9c99e04b9e5c02e6581ccbb67d59c34ef7f9b"
 dependencies = [
  "itoa",
  "libc",
@@ -2626,7 +2626,7 @@ dependencies = [
  "ascii",
  "chunked_transfer",
  "log",
- "time 0.3.9",
+ "time 0.3.14",
  "url",
 ]
 

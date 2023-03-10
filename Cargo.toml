@@ -96,7 +96,7 @@ serde_json = "1.0"
 toml = "0.7.2"
 normalize-line-endings = "0.3.0"
 sitemap = "0.4"
-open = "3"
+open = "4"
 dunce = "1.0.3"
 vimwiki = { version = "0.1", features = ["html"] }
 katex = "0.4.1"

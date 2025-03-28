@@ -6,6 +6,7 @@ mod mark;
 mod sass;
 mod site;
 mod template;
+mod toc;
 
 pub mod files;
 pub mod pagination;

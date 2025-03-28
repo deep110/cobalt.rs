@@ -162,7 +162,11 @@ impl Document {
     /// Takes `content` string and returns rendered HTML. This function doesn't
     /// take `"extends"` attribute into account. This function can be used for
     /// rendering content or excerpt.
-    fn render_html(&self, content: &str, context: &RenderContext<'_>) -> Result<String> {
+    fn render_html(
+        &self,
+        content: &str,
+        context: &RenderContext<'_>,
+    ) -> Result<(String, Option<Value>)> {
         let html = if self.front.templated {
             let template = context.parser.parse(content)?;
             template.render(context.globals)?
@@ -170,12 +174,12 @@ impl Document {
             content.to_owned()
         };
 
-        let html = match self.front.format {
-            cobalt_model::SourceFormat::Raw => html,
+        let (html, toc) = match self.front.format {
+            cobalt_model::SourceFormat::Raw => (html, None),
             cobalt_model::SourceFormat::Markdown => context.markdown.parse(&html)?,
         };
 
-        Ok(html)
+        Ok((html, toc))
     }
 
     /// Renders the excerpt and adds it to attributes of the document.
@@ -186,7 +190,7 @@ impl Document {
     /// value.
     pub(crate) fn render_excerpt(&mut self, context: &RenderContext<'_>) -> Result<()> {
         let value = if let Some(excerpt_str) = self.front.excerpt.as_ref() {
-            let excerpt = self.render_html(excerpt_str, context)?;
+            let (excerpt, _) = self.render_html(excerpt_str, context)?;
             Value::scalar(excerpt)
         } else if self.front.excerpt_separator.is_empty() {
             Value::Nil
@@ -196,7 +200,7 @@ impl Document {
                 self.front.format,
                 &self.front.excerpt_separator,
             );
-            let excerpt = self.render_html(&excerpt, context)?;
+            let (excerpt, _) = self.render_html(&excerpt, context)?;
             Value::scalar(excerpt)
         };
 
@@ -208,9 +212,12 @@ impl Document {
     ///
     /// When we say "content" we mean only this document without extended layout.
     pub(crate) fn render_content(&mut self, context: &RenderContext<'_>) -> Result<()> {
-        let content_html = self.render_html(&self.content, context)?;
+        let (content_html, toc) = self.render_html(&self.content, context)?;
         self.attributes
             .insert("content".into(), Value::scalar(content_html));
+        if let Some(toc) = toc {
+            self.attributes.insert("toc".into(), toc);
+        }
         Ok(())
     }
 
